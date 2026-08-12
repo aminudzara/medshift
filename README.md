@@ -22,7 +22,7 @@
 
 MedShift is a lightweight, localized client-side clinical tool engineered to eliminate communication breakdowns during hospital shift turnovers. Developed as a capstone project, this application directly targets the cognitive fatigue experienced by healthcare workers completing demanding 6/12-hour shifts. It bridges the operational gap between heavy, lagging Electronic Medical Record (EMR) systems and informal messaging channels by optimizing rapid data entry and secure local persistence.
 
-- **Live Demo Link:** You can access the live application hosted on Netlify here: [https://netlify.app](https://www.netlify.com/)_(To be replaced with the actual Netlify subdomain)_
+- **Live Demo Link:** You can access the live application hosted on Netlify here: [https://dzara-medshift.netlify.app](https://dzara-medshift.netlify.app)
 - **Development Experience:** Building MedShift provided a rigorous, deep dive into user-centric healthcare design and structural engineering under rigid tech constraints. Prioritizing accessibility for an exhausted user persona reshaped how I approach cognitive friction, text contrast, and UI performance.
 - **Key Learnings:** I mastered the application of standard browser APIs, deeply improving my understanding of native DOM manipulation, asynchronous operations with the Clipboard API, and robust data persistence using browser local storage state cycles.
 - **Engineering Wisdom:** Technical simplicity delivers structural stability. In high-pressure, infrastructure-constrained clinical environments, zero-dependency vanilla architectures outperform bloated modern frameworks by guaranteeing speed, offline reliability, and instant utility.
