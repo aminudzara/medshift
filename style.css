@@ -1,0 +1,321 @@
+/* =========================================
+   1. CSS VARIABLES (The Design System)
+   ========================================= */
+:root {
+  /* Colors based on your original Stitch palette */
+  --bg-main: #f6faff;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #eaeef4;
+  
+  --text-main: #171c20;
+  --text-muted: #586377;
+  
+  --primary: #006591;
+  --primary-hover: #004c6e;
+  --primary-text: #ffffff;
+  
+  --border-color: #bec8d2;
+  --border-light: #eaeef4;
+
+  /* Status Colors */
+  --status-stable-bg: #c9e6ff;
+  --status-stable-text: #001e2f;
+  --status-stable-border: #bec8d2;
+
+  --status-guarded-bg: #ffdcbd;
+  --status-guarded-text: #4d2b00;
+  --status-guarded-border: #de8712;
+
+  --status-critical-bg: #ffdad6;
+  --status-critical-text: #93000a;
+  --status-critical-border: #ba1a1a;
+
+  /* Spacing & Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 50px;
+}
+
+/* =========================================
+   2. RESETS & BASE STYLES
+   ========================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: 2rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* =========================================
+   3. LAYOUT & TYPOGRAPHY
+   ========================================= */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+/* =========================================
+   4. HEADER
+   ========================================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.app-title {
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-text);
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-surface-alt);
+}
+
+/* =========================================
+   5. DASHBOARD & CARDS
+   ========================================= */
+.dashboard-grid {
+  display: grid;
+  /* Automatically fits as many 300px columns as possible without media queries */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.patient-card {
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dynamic Card Borders applied by JS */
+.patient-card.border-critical { border-color: var(--status-critical-border); }
+.patient-card.border-guarded { border-color: var(--status-guarded-border); }
+.patient-card.border-stable { border-color: var(--status-stable-border); }
+
+.card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.bed-number {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.patient-initials {
+  background-color: var(--bg-surface-alt);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Dynamic Badges applied by JS */
+.badge-critical { background-color: var(--status-critical-bg); color: var(--status-critical-text); }
+.badge-guarded { background-color: var(--status-guarded-bg); color: var(--status-guarded-text); }
+.badge-stable { background-color: var(--status-stable-bg); color: var(--status-stable-text); }
+
+.tasks-list {
+  font-family: monospace;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.card-footer {
+  padding: 1rem;
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-light);
+}
+
+.btn-delete {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text-muted);
+}
+
+.btn-delete:hover {
+  color: var(--status-critical-border);
+}
+
+/* =========================================
+   6. EXPORT PANEL
+   ========================================= */
+.export-panel {
+  margin-top: 3rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* =========================================
+   7. MODAL (HTML5 Dialog)
+   ========================================= */
+dialog {
+  margin: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 500px;
+  background-color: var(--bg-surface);
+}
+
+dialog::backdrop {
+  background-color: rgba(23, 28, 32, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+input[type="text"], textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* =========================================
+   8. TOAST NOTIFICATION
+   ========================================= */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2e7d32;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 50;
+}
+
+.toast.show {
+  opacity: 1;
+}

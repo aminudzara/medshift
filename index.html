@@ -1,0 +1,269 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedShift</title>
+
+    <!-- Performance: Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Typography: Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons: Material Symbols Outlined -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Top Header -->
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <h1 class="app-title">MedShift</h1>
+        <span
+          class="status-badge"
+          style="
+            background-color: var(--bg-surface-alt);
+            color: var(--text-muted);
+          "
+          >Active Ward List</span
+        >
+      </div>
+      <button id="btn-open-modal" class="btn-primary">
+        + New Handover Note
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+      <!-- Dashboard Container -->
+      <section
+        id="patient-dashboard"
+        aria-label="Active Patients"
+        class="dashboard-grid"
+      >
+        <!-- JS will inject <article> cards here -->
+      </section>
+
+      <!-- Export Panel -->
+      <section aria-label="Export Options" class="export-panel">
+        <div>
+          <h3
+            class="app-title"
+            style="font-size: 1.25rem; margin-bottom: 0.25rem"
+          >
+            Export Shift Handover
+          </h3>
+          <p style="color: var(--text-muted)">
+            Copies all formatted summaries instantly to clipboard for secure
+            transfer.
+          </p>
+        </div>
+        <button
+          id="btn-export-all"
+          class="btn-primary"
+          style="display: flex; align-items: center; gap: 0.5rem"
+        >
+          <span class="material-symbols-outlined">bolt</span>
+          Export Full Summary
+        </button>
+      </section>
+    </main>
+
+    <!-- Template for Patient Card (Invisible in DOM, used by JS) -->
+    <template id="patient-card-template">
+      <article class="patient-card" data-id="">
+        <button
+          class="btn-delete delete-btn"
+          title="Remove Patient"
+          aria-label="Remove Patient"
+        >
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+
+        <div class="card-content">
+          <header class="card-header">
+            <div>
+              <span class="section-title">Bed</span>
+              <h2 class="bed-number"></h2>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+                margin-right: 2.5rem;
+              "
+            >
+              <div class="patient-initials initials-circle"></div>
+              <span class="status-badge"></span>
+            </div>
+          </header>
+
+          <section>
+            <h3 class="section-title">Tasks</h3>
+            <p class="tasks-list tasks-text" style="white-space: pre-wrap"></p>
+          </section>
+        </div>
+
+        <footer class="card-footer">
+          <button class="btn-outline copy-single-btn">
+            <span class="material-symbols-outlined">content_copy</span>
+            Copy Summary
+          </button>
+        </footer>
+      </article>
+    </template>
+
+    <!-- Modal Dialog -->
+    <dialog id="handoverModal">
+      <form id="handover-form" data-netlify="true" novalidate>
+        <header class="modal-header">
+          <h2
+            class="app-title"
+            style="font-size: 1.25rem; color: var(--text-main)"
+          >
+            New Handover Note
+          </h2>
+          <button
+            type="button"
+            id="btn-close-modal"
+            class="btn-delete"
+            style="position: static"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+
+        <div class="modal-body">
+          <!-- Error message container -->
+          <div
+            id="form-error"
+            class="status-badge badge-critical"
+            style="
+              display: none;
+              border-radius: var(--radius-md);
+              padding: 0.75rem;
+            "
+            aria-live="polite"
+          ></div>
+
+          <div style="display: flex; gap: 1rem">
+            <div class="form-group" style="flex: 1">
+              <label for="input-bed" class="section-title">Bed / Room</label>
+              <input
+                id="input-bed"
+                name="bed"
+                required
+                placeholder="e.g. 04-A"
+                type="text"
+              />
+            </div>
+            <div class="form-group" style="flex: 1">
+              <label for="input-initials" class="section-title">Initials</label>
+              <input
+                id="input-initials"
+                name="initials"
+                required
+                maxlength="3"
+                placeholder="e.g. JD"
+                type="text"
+                style="text-transform: uppercase"
+              />
+            </div>
+          </div>
+
+          <fieldset class="form-group" style="border: none">
+            <legend class="section-title" style="margin-bottom: 0.5rem">
+              Priority Status
+            </legend>
+            <div style="display: flex; gap: 1rem; width: 100%">
+              <label
+                class="btn-outline"
+                style="cursor: pointer; padding: 0.75rem"
+              >
+                <input
+                  name="status"
+                  type="radio"
+                  value="Stable"
+                  required
+                  style="margin-right: 0.5rem"
+                />
+                Stable
+              </label>
+              <label
+                class="btn-outline"
+                style="cursor: pointer; padding: 0.75rem"
+              >
+                <input
+                  name="status"
+                  type="radio"
+                  value="Guarded"
+                  style="margin-right: 0.5rem"
+                />
+                Guarded
+              </label>
+              <label
+                class="btn-outline"
+                style="cursor: pointer; padding: 0.75rem"
+              >
+                <input
+                  name="status"
+                  type="radio"
+                  value="Critical"
+                  style="margin-right: 0.5rem"
+                />
+                Critical
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="input-tasks" class="section-title"
+              >Shift Notes & Tasks</label
+            >
+            <textarea
+              id="input-tasks"
+              name="tasks"
+              required
+              placeholder="Enter clinical notes, pending tasks, or handover details..."
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+
+        <footer class="modal-footer">
+          <button
+            type="button"
+            id="btn-cancel-modal"
+            class="btn-outline"
+            style="width: auto"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">Add to Shift List</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+      <span class="material-symbols-outlined">check_circle</span>
+      <span id="toast-message">Handover copied to clipboard!</span>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
