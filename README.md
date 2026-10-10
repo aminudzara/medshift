@@ -59,7 +59,7 @@ To clone and run this application, you'll need [Git](https://git-scm.com) and an
 
 ```bash
 # Clone this repository
-\$ git clone https://github.com
+\$ git clone git@github.com:aminudzara/medshift.git
 
 # Change directory into your project
 \$ cd medshift
